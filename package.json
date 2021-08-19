@@ -1,0 +1,61 @@
+{
+  "name": "nodejs-boilerplate",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:higordiego/nodejs-boilerplate.git",
+  "author": "higordiego <higordiegoti@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "deploy:dev": "ssh -i deploy/ssh-key.pem ubuntu@54.80.10.185  'bash -s' < deploy/dev-deploy.sh",
+    "start": "node index.js",
+    "start:database": "docker-compose -f docker-compose-database.yml up -d",
+    "start:develop": "docker-compose docker-compose-api.yml up -d",
+    "snyk:api": "snyk test --yarn-workspaces  --detection-depth=4 --strict-out-of-sync=false",
+    "docker:security": "npx snyk test --docker node:12-alpine --file=DockerFile >> security-docker.log",
+    "migration:reload": "yarn sequelize db:migrate:undo:all && yarn sequelize db:migrate",
+    "seed:reload": "yarn sequelize db:seed:undo:all && yarn sequelize db:seed:all"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.3.4",
+    "@commitlint/config-conventional": "^8.3.4",
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "3.0.2",
+    "husky": "^4.2.5",
+    "jest": "^26.0.1",
+    "lint-staged": "^9.5.0",
+    "sequelize-cli": "^6.2.0",
+    "snyk": "^1.372.0",
+    "standard": "^14.3.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "standard": {
+    "env": [
+      "jest"
+    ]
+  },
+  "dependencies": {
+    "@sendgrid/mail": "^7.2.3",
+    "@sentry/node": "^5.20.1",
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "cpf-cnpj-validator": "^1.0.2",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.6.1",
+    "handlebars": "^4.7.6",
+    "helmet": "^4.0.0",
+    "hoek": "^6.1.3",
+    "jsinspect": "^0.12.7",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "newrelic": "^6.11.0",
+    "pg": "^8.3.0",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.3.4"
+  }
+}
